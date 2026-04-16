@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KB Portfolio</title>
+    <meta
+      name="description"
+      content="KB portfolio — modern web designer and frontend developer building bold, clean digital experiences."
+    />
+    <style>
+      :root {
+        --bg: #070b1a;
+        --bg-soft: rgba(10, 16, 36, 0.78);
+        --panel: rgba(16, 23, 48, 0.72);
+        --panel-strong: rgba(18, 27, 56, 0.92);
+        --text: #f5f7ff;
+        --muted: #aab4d4;
+        --cyan: #4de2ff;
+        --pink: #ff4fd8;
+        --purple: #8f7cff;
+        --border: rgba(255, 255, 255, 0.1);
+        --shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+        --radius: 24px;
+        --radius-sm: 18px;
+        --max-width: 1140px;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: Inter, Arial, sans-serif;
+        color: var(--text);
+        background:
+          linear-gradient(rgba(7, 11, 26, 0.72), rgba(7, 11, 26, 0.82)),
+          url("./backround.png") center / cover no-repeat fixed;
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      body.menu-open {
+        overflow: hidden;
+      }
+
+      body::before,
+      body::after {
+        content: "";
+        position: fixed;
+        width: 380px;
+        height: 380px;
+        border-radius: 50%;
+        filter: blur(100px);
+        opacity: 0.28;
+        z-index: -2;
+        pointer-events: none;
+        animation: floatGlow 10s ease-in-out infinite;
+      }
+
+      body::before {
+        top: -100px;
+        left: -90px;
+        background: var(--cyan);
+      }
+
+      body::after {
+        bottom: -80px;
+        right: -90px;
+        background: var(--pink);
+        animation-delay: 2s;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      .container {
+        width: min(92%, var(--max-width));
+        margin: 0 auto;
+      }
+
+      .section {
+        padding: 110px 0;
+      }
+
+      .section-title {
+        font-size: clamp(2rem, 4vw, 3rem);
+        line-height: 1.1;
+        margin-bottom: 14px;
+      }
+
+      .section-kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--cyan);
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        font-weight: 800;
+        font-size: 0.78rem;
+        margin-bottom: 18px;
+      }
+
+      .section-kicker::before {
+        content: "";
+        width: 32px;
+        height: 1px;
+        background: linear-gradient(90deg, var(--cyan), transparent);
+      }
+
+      .section-copy {
+        color: var(--muted);
+        max-width: 720px;
+        font-size: 1.02rem;
+      }
+
+      .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        border-bottom: 1px solid transparent;
+        transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      }
+
+      .navbar.scrolled {
+        background: rgba(7, 11, 26, 0.7);
+        backdrop-filter: blur(16px);
+        border-color: rgba(255, 255, 255, 0.07);
+        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.18);
+      }
+
+      .nav-content {
+        min-height: 82px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+      }
+
+      .logo {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: 0 0 28px rgba(77, 226, 255, 0.2);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        flex-shrink: 0;
+      }
+
+      .logo:hover {
+        transform: translateY(-2px) scale(1.03);
+        box-shadow: 0 0 34px rgba(255, 79, 216, 0.25);
+      }
+
+      .logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 26px;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: var(--muted);
+        font-weight: 700;
+        font-size: 0.96rem;
+        transition: color 0.25s ease, text-shadow 0.25s ease;
+        position: relative;
+      }
+
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -8px;
+        width: 100%;
+        height: 2px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--cyan), var(--pink));
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.25s ease;
+      }
+
+      .nav-links a:hover,
+      .nav-links a.active {
+        color: var(--text);
+      }
+
+      .nav-links a:hover::after,
+      .nav-links a.active::after {
+        transform: scaleX(1);
+      }
+
+      .menu-toggle {
+        display: none;
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--text);
+        cursor: pointer;
+      }
+
+      .menu-toggle span,
+      .menu-toggle::before,
+      .menu-toggle::after {
+        content: "";
+        display: block;
+        width: 20px;
+        height: 2px;
+        background: currentColor;
+        margin: 5px auto;
+        transition: transform 0.25s ease, opacity 0.25s ease;
+      }
+
+      .menu-toggle.active::before {
+        transform: translateY(7px) rotate(45deg);
+      }
+
+      .menu-toggle.active span {
+        opacity: 0;
+      }
+
+      .menu-toggle.active::after {
+        transform: translateY(-7px) rotate(-45deg);
+      }
+
+      .hero {
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 80px 0 60px;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 40px;
+        align-items: center;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 16px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--cyan);
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 0.82rem;
+        margin-bottom: 22px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .hero h1 {
+        font-size: clamp(3rem, 7vw, 5.5rem);
+        line-height: 0.98;
+        margin-bottom: 20px;
+        letter-spacing: -0.04em;
+      }
+
+      .hero h1 span {
+        display: inline-block;
+        background: linear-gradient(90deg, var(--cyan), var(--pink));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .intro {
+        max-width: 650px;
+        color: var(--muted);
+        font-size: 1.12rem;
+        margin-bottom: 28px;
+      }
+
+      .hero-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-bottom: 26px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        min-height: 54px;
+        padding: 0 22px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        text-decoration: none;
+        font-weight: 800;
+        transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+      }
+
+      .button-primary {
+        color: #07101f;
+        background: linear-gradient(90deg, var(--cyan), var(--pink));
+        box-shadow: 0 14px 34px rgba(77, 226, 255, 0.22);
+      }
+
+      .button-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 18px 38px rgba(255, 79, 216, 0.2);
+      }
+
+      .button-secondary {
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.08);
+      }
+
+      .button-secondary:hover {
+        transform: translateY(-2px);
+        border-color: rgba(77, 226, 255, 0.35);
+      }
+
+      .hero-socials {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+
+      .hero-socials a {
+        text-decoration: none;
+        color: var(--muted);
+        font-weight: 700;
+        transition: color 0.25s ease, transform 0.25s ease;
+      }
+
+      .hero-socials a:hover {
+        color: var(--pink);
+        transform: translateY(-1px);
+      }
+
+      .hero-card {
+        position: relative;
+        background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 30px;
+        padding: 28px;
+        backdrop-filter: blur(14px);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .hero-card::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        background: linear-gradient(135deg, rgba(77,226,255,0.2), rgba(255,79,216,0.04), rgba(143,124,255,0.18));
+        z-index: -1;
+      }
+
+      .hero-image {
+        border-radius: 22px;
+        overflow: hidden;
+        margin-bottom: 22px;
+        aspect-ratio: 4 / 4.5;
+        background: rgba(255,255,255,0.05);
+      }
+
+      .hero-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .hero-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+      }
+
+      .stat {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 18px;
+        padding: 16px;
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 1.35rem;
+        margin-bottom: 4px;
+      }
+
+      .stat span {
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 28px;
+        margin-top: 28px;
+      }
+
+      .glass-card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 28px;
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(14px);
+      }
+
+      .about-list {
+        list-style: none;
+        display: grid;
+        gap: 14px;
+      }
+
+      .about-list li {
+        color: var(--muted);
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+      }
+
+      .about-list li::before {
+        content: "✦";
+        color: var(--cyan);
+        flex-shrink: 0;
+      }
+
+      .skill-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .skill-pills span {
+        padding: 10px 14px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: var(--text);
+        font-weight: 700;
+        font-size: 0.92rem;
+      }
+
+      .timeline {
+        display: grid;
+        gap: 20px;
+        margin-top: 30px;
+      }
+
+      .timeline-item {
+        position: relative;
+        padding: 24px 24px 24px 72px;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(14px);
+      }
+
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        left: 30px;
+        top: 28px;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--cyan), var(--pink));
+        box-shadow: 0 0 20px rgba(77, 226, 255, 0.45);
+      }
+
+      .timeline-item::after {
+        content: "";
+        position: absolute;
+        left: 36px;
+        top: 44px;
+        bottom: -20px;
+        width: 2px;
+        background: linear-gradient(var(--cyan), transparent);
+        opacity: 0.35;
+      }
+
+      .timeline-item:last-child::after {
+        display: none;
+      }
+
+      .timeline-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+      }
+
+      .timeline-top h3 {
+        font-size: 1.2rem;
+        color: var(--pink);
+      }
+
+      .timeline-date {
+        color: var(--cyan);
+        font-weight: 800;
+      }
+
+      .timeline-company {
+        color: var(--text);
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+
+      .timeline-text {
+        color: var(--muted);
+      }
+
+      .projects-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-bottom: 28px;
+      }
+
+      .project-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px;
+      }
+
+      .project-card-link {
+        text-decoration: none;
+        display: block;
+        height: 100%;
+      }
+
+      .project-card {
+        height: 100%;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 26px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(14px);
+        transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .project-card-link:hover .project-card {
+        transform: translateY(-8px);
+        border-color: rgba(77, 226, 255, 0.35);
+        box-shadow: 0 24px 50px rgba(77, 226, 255, 0.12);
+      }
+
+      .project-media {
+        aspect-ratio: 16 / 10;
+        overflow: hidden;
+        background: rgba(255,255,255,0.05);
+      }
+
+      .project-media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+
+      .project-card-link:hover .project-media img {
+        transform: scale(1.06);
+      }
+
+      .project-body {
+        padding: 22px;
+      }
+
+      .project-tag {
+        display: inline-block;
+        margin-bottom: 12px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        color: var(--cyan);
+        background: rgba(77, 226, 255, 0.08);
+        font-size: 0.8rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .project-body h3 {
+        font-size: 1.25rem;
+        margin-bottom: 10px;
+        color: var(--text);
+      }
+
+      .project-body p {
+        color: var(--muted);
+        margin-bottom: 16px;
+      }
+
+      .project-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        color: var(--text);
+        font-weight: 700;
+      }
+
+      .project-footer span:last-child {
+        color: var(--cyan);
+      }
+
+      .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 0.9fr;
+        gap: 24px;
+        margin-top: 30px;
+      }
+
+      .contact-list {
+        list-style: none;
+        display: grid;
+        gap: 16px;
+      }
+
+      .contact-list a,
+      .contact-list span {
+        text-decoration: none;
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      .contact-list strong {
+        display: block;
+        color: var(--text);
+        margin-bottom: 4px;
+      }
+
+      .cta-card {
+        background: linear-gradient(135deg, rgba(77,226,255,0.12), rgba(255,79,216,0.1));
+        border: 1px solid rgba(255,255,255,0.1);
+      }
+
+      .footer {
+        padding: 28px 0 46px;
+        color: var(--muted);
+        text-align: center;
+        font-size: 0.95rem;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(28px);
+        transition: opacity 0.7s ease, transform 0.7s ease;
+      }
+
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .to-top {
+        position: fixed;
+        right: 22px;
+        bottom: 22px;
+        width: 50px;
+        height: 50px;
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 50%;
+        background: rgba(7, 11, 26, 0.72);
+        color: var(--text);
+        backdrop-filter: blur(12px);
+        cursor: pointer;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(10px);
+        transition: opacity 0.25s ease, transform 0.25s ease;
+        z-index: 990;
+      }
+
+      .to-top.visible {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+
+      @keyframes floatGlow {
+        0%, 100% { transform: translateY(0) scale(1); }
+        50% { transform: translateY(16px) scale(1.05); }
+      }
+
+      @media (max-width: 960px) {
+        .hero-grid,
+        .about-grid,
+        .contact-grid,
+        .project-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero {
+          min-height: auto;
+          padding-top: 50px;
+        }
+      }
+
+      @media (max-width: 780px) {
+        .menu-toggle {
+          display: inline-block;
+        }
+
+        .nav-links {
+          position: fixed;
+          top: 82px;
+          left: 4%;
+          right: 4%;
+          display: grid;
+          gap: 14px;
+          padding: 18px;
+          border-radius: 22px;
+          background: rgba(9, 14, 32, 0.95);
+          border: 1px solid rgba(255,255,255,0.08);
+          box-shadow: var(--shadow);
+          backdrop-filter: blur(16px);
+          opacity: 0;
+          pointer-events: none;
+          transform: translateY(-10px);
+          transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        .nav-links.open {
+          opacity: 1;
+          pointer-events: auto;
+          transform: translateY(0);
+        }
+
+        .nav-links a {
+          padding: 6px 0;
+        }
+
+        .hero-stats {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .section {
+          padding: 86px 0;
+        }
+
+        .nav-content {
+          min-height: 74px;
+        }
+
+        .logo {
+          width: 56px;
+          height: 56px;
+        }
+
+        .hero h1 {
+          font-size: clamp(2.6rem, 12vw, 4rem);
+        }
+
+        .hero-buttons {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .button {
+          width: 100%;
+        }
+
+        .timeline-item {
+          padding-left: 56px;
+        }
+
+        .timeline-item::before {
+          left: 22px;
+        }
+
+        .timeline-item::after {
+          left: 28px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar" id="navbar">
+      <div class="container nav-content">
+        <a href="#home" class="logo" aria-label="KB home">
+          <img src="./Logo.png" alt="KB logo" />
+        </a>
+
+        <div class="nav-right">
+          <div class="nav-links" id="navLinks">
+            <a href="#about">About</a>
+            <a href="#experience">Experience</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+          </div>
+
+          <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <header class="hero" id="home">
+      <div class="container hero-grid">
+        <div class="reveal">
+          <p class="tag">Portfolio • Designer • Developer</p>
+          <h1>Hello, I'm <span>KB</span></h1>
+          <p class="intro">
+            I build bold, modern, and simple digital experiences with clean design,
+            strong visual energy, and smooth user interactions.
+          </p>
+
+          <div class="hero-buttons">
+            <a href="#projects" class="button button-primary">View Projects</a>
+            <a href="#contact" class="button button-secondary">Let's Work Together</a>
+          </div>
+
+          <div class="hero-socials">
+            <a href="#">GitHub</a>
+            <a href="#">LinkedIn</a>
+            <a href="#">Instagram</a>
+          </div>
+        </div>
+
+        <aside class="hero-card reveal">
+          <div class="hero-image">
+            <img src="./project1.png" alt="Featured KB project preview" />
+          </div>
+
+          <div class="hero-stats">
+            <div class="stat">
+              <strong>3+</strong>
+              <span>Years creating</span>
+            </div>
+            <div class="stat">
+              <strong>12+</strong>
+              <span>Projects built</span>
+            </div>
+            <div class="stat">
+              <strong>100%</strong>
+              <span>Creative focus</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </header>
+
+    <main>
+      <section id="about" class="section">
+        <div class="container">
+          <div class="section-kicker reveal">About</div>
+          <h2 class="section-title reveal">Design-driven work with real purpose.</h2>
+          <p class="section-copy reveal">
+            I’m a designer and frontend creator focused on building websites that feel clean,
+            memorable, and intentional. I care about layout, user flow, motion, and the little
+            details that make digital work feel premium.
+          </p>
+
+          <div class="about-grid">
+            <div class="glass-card reveal">
+              <ul class="about-list">
+                <li>I design modern interfaces that feel simple, sharp, and easy to use.</li>
+                <li>I build responsive websites that look polished on desktop, tablet, and mobile.</li>
+                <li>I enjoy combining visuals, branding, and frontend development into one clear experience.</li>
+              </ul>
+            </div>
+
+            <div class="glass-card reveal">
+              <div class="skill-pills">
+                <span>HTML</span>
+                <span>CSS</span>
+                <span>JavaScript</span>
+                <span>UI Design</span>
+                <span>Responsive Design</span>
+                <span>Branding</span>
+                <span>Landing Pages</span>
+                <span>Creative Direction</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="experience" class="section">
+        <div class="container">
+          <div class="section-kicker reveal">Experience</div>
+          <h2 class="section-title reveal">Selected roles and creative work.</h2>
+
+          <div class="timeline">
+            <article class="timeline-item reveal">
+              <div class="timeline-top">
+                <h3>Frontend Developer</h3>
+                <span class="timeline-date">2024 — Present</span>
+              </div>
+              <p class="timeline-company">Your Company Name</p>
+              <p class="timeline-text">
+                Building responsive websites, improving user experience, and creating clean, modern interfaces for digital products and brands.
+              </p>
+            </article>
+
+            <article class="timeline-item reveal">
+              <div class="timeline-top">
+                <h3>Web Designer</h3>
+                <span class="timeline-date">2023 — 2024</span>
+              </div>
+              <p class="timeline-company">Creative Studio</p>
+              <p class="timeline-text">
+                Designed stylish landing pages, brand visuals, and web layouts focused on clarity, aesthetics, and presentation.
+              </p>
+            </article>
+
+            <article class="timeline-item reveal">
+              <div class="timeline-top">
+                <h3>Freelance Creator</h3>
+                <span class="timeline-date">2022 — 2023</span>
+              </div>
+              <p class="timeline-company">Self-Employed</p>
+              <p class="timeline-text">
+                Worked with clients on custom websites and digital visuals with strong branding, modern structure, and practical design solutions.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" class="section">
+        <div class="container">
+          <div class="projects-head">
+            <div>
+              <div class="section-kicker reveal">Projects</div>
+              <h2 class="section-title reveal">Featured work that shows your style.</h2>
+            </div>
+            <p class="section-copy reveal">
+              Add your real links and screenshots here to make the portfolio feel complete and credible.
+            </p>
+          </div>
+
+          <div class="project-grid">
+            <a href="https://your-nail-salon-website.com" target="_blank" class="project-card-link reveal">
+              <article class="project-card">
+                <div class="project-media">
+                  <img src="./project1.png" alt="Preview of Nail Salon Website" />
+                </div>
+                <div class="project-body">
+                  <span class="project-tag">Featured</span>
+                  <h3>Nail Salon Website</h3>
+                  <p>
+                    A stylish beauty brand website with a premium feel, modern sections, and elegant visual presentation.
+                  </p>
+                  <div class="project-footer">
+                    <span>Brand / Web Design</span>
+                    <span>Open ↗</span>
+                  </div>
+                </div>
+              </article>
+            </a>
+
+            <a href="https://your-project-two-link.com" target="_blank" class="project-card-link reveal">
+              <article class="project-card">
+                <div class="project-media">
+                  <img src="./project1.png" alt="Preview of Project Two" />
+                </div>
+                <div class="project-body">
+                  <span class="project-tag">UI / Frontend</span>
+                  <h3>Project Two</h3>
+                  <p>
+                    A clean and engaging concept project that highlights your layout skills, design taste, and frontend execution.
+                  </p>
+                  <div class="project-footer">
+                    <span>Modern Interface</span>
+                    <span>Open ↗</span>
+                  </div>
+                </div>
+              </article>
+            </a>
+
+            <a href="https://your-project-three-link.com" target="_blank" class="project-card-link reveal">
+              <article class="project-card">
+                <div class="project-media">
+                  <img src="./project1.png" alt="Preview of Project Three" />
+                </div>
+                <div class="project-body">
+                  <span class="project-tag">Creative Build</span>
+                  <h3>Project Three</h3>
+                  <p>
+                    A strong portfolio piece that shows the kind of polished creative work you want more people to notice.
+                  </p>
+                  <div class="project-footer">
+                    <span>Design + Code</span>
+                    <span>Open ↗</span>
+                  </div>
+                </div>
+              </article>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="section">
+        <div class="container">
+          <div class="section-kicker reveal">Contact</div>
+          <h2 class="section-title reveal">Let’s build something strong together.</h2>
+          <p class="section-copy reveal">
+            Replace the details below with your real contact info, portfolio links, and business email.
+          </p>
+
+          <div class="contact-grid">
+            <div class="glass-card reveal">
+              <ul class="contact-list">
+                <li>
+                  <strong>Email</strong>
+                  <a href="mailto:yourname@email.com">yourname@email.com</a>
+                </li>
+                <li>
+                  <strong>Instagram</strong>
+                  <a href="https://instagram.com/yourhandle" target="_blank">@yourhandle</a>
+                </li>
+                <li>
+                  <strong>LinkedIn</strong>
+                  <a href="https://linkedin.com/in/yourname" target="_blank">linkedin.com/in/yourname</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="glass-card cta-card reveal">
+              <h3 style="font-size: 1.4rem; margin-bottom: 10px;">Available for freelance and creative collaborations.</h3>
+              <p style="color: var(--muted); margin-bottom: 18px;">
+                Need a portfolio, landing page, or a modern visual redesign? Let’s create something clean, bold, and memorable.
+              </p>
+              <a href="mailto:yourname@email.com" class="button button-primary">Send an Email</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">© <span id="year"></span> KB Portfolio. Designed with style and built for impact.</div>
+    </footer>
+
+    <button class="to-top" id="toTop" aria-label="Back to top">↑</button>
+
+    <script>
+      const navbar = document.getElementById("navbar");
+      const menuToggle = document.getElementById("menuToggle");
+      const navLinks = document.getElementById("navLinks");
+      const navAnchors = [...document.querySelectorAll('.nav-links a')];
+      const sections = [...document.querySelectorAll('main section')];
+      const revealItems = document.querySelectorAll('.reveal');
+      const toTop = document.getElementById('toTop');
+      const year = document.getElementById('year');
+
+      year.textContent = new Date().getFullYear();
+
+      const toggleMenu = () => {
+        const isOpen = navLinks.classList.toggle('open');
+        menuToggle.classList.toggle('active', isOpen);
+        menuToggle.setAttribute('aria-expanded', String(isOpen));
+        document.body.classList.toggle('menu-open', isOpen);
+      };
+
+      menuToggle.addEventListener('click', toggleMenu);
+
+      navAnchors.forEach((link) => {
+        link.addEventListener('click', () => {
+          navLinks.classList.remove('open');
+          menuToggle.classList.remove('active');
+          menuToggle.setAttribute('aria-expanded', 'false');
+          document.body.classList.remove('menu-open');
+        });
+      });
+
+      const handleScroll = () => {
+        navbar.classList.toggle('scrolled', window.scrollY > 20);
+        toTop.classList.toggle('visible', window.scrollY > 500);
+
+        let current = '';
+        sections.forEach((section) => {
+          const top = section.offsetTop - 140;
+          const height = section.offsetHeight;
+          if (window.scrollY >= top && window.scrollY < top + height) {
+            current = section.id;
+          }
+        });
+
+        navAnchors.forEach((link) => {
+          const active = link.getAttribute('href') === `#${current}`;
+          link.classList.toggle('active', active);
+        });
+      };
+
+      window.addEventListener('scroll', handleScroll);
+      handleScroll();
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.14 }
+      );
+
+      revealItems.forEach((item) => observer.observe(item));
+
+      toTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    </script>
+  </body>
+</html>
